@@ -1,14 +1,6 @@
-# Devloper Assistant MVP
-A containerized AI assistant specialized in reading codebases, code security, and software design.
-This AI assistant is designed to help developers when they encounter a new codebase, it will traverse through the code base and provide a detailed explanation to the developer what the codebase consists of, potential security concerns and what the code is doing all from a cli chat interface.  
-Built with production-ready practices including monitoring, CI/CD automation, and container orchestration.
-
-
-## Overview
-This project demonstrates how to take an LLM-powered application from concept to production-ready deployment. 
-The assistant answers questions about Docker, Kubernetes, CI/CD pipelines, cloud services, and infrastructure best practices.
+# AI Chatbot
+A containerized AI chat bot built with Redis caching, observability with Prometheus/Grafana and CI/CD automation with github Actions. 
 The surrounding infrastructure of this project aims for production ready software that utilizes containerization, observability, automated testing, and deployment pipelines.
-
 
 ## Tech Stack
 - **Runtime**: Python 3.10.12
@@ -34,9 +26,10 @@ The surrounding infrastructure of this project aims for production ready softwar
 - [x] **Project structure and planning**
 - [x] **Core agent implementation**
         - Three-layer architecture: abstract interface, Anthropic implementation, FastAPI exposure with validation
+- [x] **FastAPI REST API with validation**
 - [x] **Docker containerization**
-        
-- [ ] **Docker Compose orchestration**
+- [x] **Docker Compose orchestration**
+- [x] **Redis Server side Caching**
 - [ ] **Prometheus and Grafana monitoring**
 - [ ] **GitHub Actions CI/CD pipeline**
 - [ ] **Documentation and polish**
@@ -44,7 +37,7 @@ The surrounding infrastructure of this project aims for production ready softwar
 
 ## Why I Built This
 I am a platform engineer in the making. Understanding how software runs in a production environment and how to effectively deploy, monitor, scale, and maintain software fascinates me. 
-I built this project to sharpen those skills. The function of the agent is cool, but from my perspective, it is secondary to the platform it is built upon.
+I built this project to sharpen those skills. The function of the agent is okey, but from my perspective, it is secondary to the platform it is built upon.
 
 
 ## Getting Started
