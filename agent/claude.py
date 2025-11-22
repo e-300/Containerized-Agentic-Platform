@@ -3,19 +3,49 @@
 from anthropic import Anthropic, APIError
 from anthropic.types import TextBlock
 from agent.base import AI_Platform
+import redis
+import hashlib
 
 
 class AnthropicAgent(AI_Platform):
 
     #parameterized constructor 
-    def __init__(self, api_key: str, system_prompt: str | None):
+    def __init__(self, api_key: str, system_prompt: str | None, redis_host: str = "localhost", 
+                 redis_port: int = 6379, socket_connect_timeout: float = 5):
 
         self.api_key = api_key
-        # intial prompt for aglinning the ai behavior should be inputted here 
-        # maybe add some startup behaviors such as target a codebase 
         self.system_prompt = system_prompt or "You are a helpful developer assistant."
         self.client = Anthropic(api_key=self.api_key)
         self.model = "claude-3-5-haiku-latest"
+
+        # Redis client with connection pooling
+        try:
+            
+            self.redis_client = redis.Redis(
+                host=redis_host,
+                port=redis_port,
+                db=0,
+                decode_responses=True,
+                socket_connect_timeout=socket_connect_timeout
+            )
+
+            # Test connection
+            self.redis_client.ping()
+            #control var 
+            self.redis_enabled = True
+
+        except (redis.ConnectionError, redis.TimeoutError) as e:
+            print(f"Redis connection failed: {e}. Caching disabled.")
+            self.redis_enabled = False
+
+     
+    
+    def _generate_cache_key(self, user_input:str) -> str:      
+        """Generate a deterministic cache key from user input"""  
+        # Include system prompt in hash for unique caching per configuration
+        cache_string = f"{self.system_prompt}:{user_input}"
+        return f"agent_cache:{hashlib.sha256(cache_string.encode()).hexdigest()}"
+
 
 
     #helper function to extract text according to cluade api bc they be expecting various i/o
@@ -51,16 +81,42 @@ class AnthropicAgent(AI_Platform):
     #high lvl wrapper - our production concerns 
     #need to add: logging, metrics, security filters, rate limiting, and redis caching
     def process(self, user_input: str) -> str:
-
         if not user_input or not user_input.strip():
             return "Input is empty."
-
         try:
-            response = self.chat(user_input)
-            return response
+            # Check Redis cache if enabled
+            if self.redis_enabled:
+                #print("DEBUG: About to generate cache key")
+                cache_key = self._generate_cache_key(user_input)
+                #print(f"DEBUG: Cache key generated: {cache_key}")
+                
+                try:
+                    cached_response = self.redis_client.get(cache_key)
+                    # Explicitly check type and return if found
+                    if cached_response is not None and isinstance(cached_response, str):
+                        return str(cached_response)
+                    
 
+                except (redis.RedisError, AttributeError, NameError) as e:
+                    print(f"Redis GET error: {e}. Proceeding without cache.")
+                    # Disable Redis for this instance if connection is broken
+                    self.redis_enabled = False
+            
+            # Cache miss or Redis disabled - call LLM
+            response = self.chat(user_input)
+            
+            # Store in Redis cache if enabled and response is valid
+            if self.redis_enabled and response and not response.startswith("Anthropic API error"):
+                try:
+                    self.redis_client.setex(cache_key, 3600, response)
+                except redis.RedisError as e:
+                    print(f"Redis SET error: {e}. Response returned without caching.")
+            
+            return response
+             
         except Exception as e:
             return f"Processing error: {str(e)}"
+        
 
 
 

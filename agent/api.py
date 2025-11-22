@@ -23,9 +23,18 @@ if api_key is None:
     raise ValueError("ANTHROPIC_API_KEY environment variable is missing.")
 
 
-#Agent intialized 
-agent = AnthropicAgent(api_key=api_key, system_prompt=None)
 
+# Redis configuration from environment variables
+redis_host = os.getenv("REDIS_HOST", "redis")
+redis_port = int(os.getenv("REDIS_PORT", "6379"))
+
+# Agent initialized with Redis config
+agent = AnthropicAgent(
+    api_key=api_key, 
+    system_prompt=None,
+    redis_host=redis_host,
+    redis_port=redis_port
+)
 
 
 @app.post("/chat")
@@ -34,5 +43,6 @@ async def chat(req: ChatRequest):
     response = agent.process(req.message)
     
     return {"response": response}
+
 
 
