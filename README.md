@@ -237,9 +237,10 @@ Pipeline Stages:
             Build Docker image with commit SHA tag
             Verify image creation
 
-Screenshot Placeholder: [Insert GitHub Actions workflow screenshot showing successful pipeline run]
+<img width="2903" height="1561" alt="image" src="https://github.com/user-attachments/assets/b0e1b91b-9c4b-4200-b9e9-ad3e62eecd50" />
 
-*****Put Github Actions Screen Shot successful pipeline run boi*****
+
+*****Github Actions Screen Shot successful pipeline *****
 
 
 
