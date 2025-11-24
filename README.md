@@ -30,8 +30,8 @@ The surrounding infrastructure of this project aims for production ready softwar
 - [x] **Docker containerization**
 - [x] **Docker Compose orchestration**
 - [x] **Redis Server side Caching**
-- [ ] **Prometheus and Grafana monitoring**
-- [ ] **GitHub Actions CI/CD pipeline**
+- [x] **Prometheus and Grafana monitoring**
+- [x] **GitHub Actions CI/CD pipeline**
 - [ ] **Documentation and polish**
 
 
