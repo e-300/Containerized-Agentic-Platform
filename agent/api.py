@@ -24,6 +24,8 @@ api_key = os.getenv("ANTHROPIC_API_KEY")
 if api_key is None:
     raise ValueError("ANTHROPIC_API_KEY environment variable is missing.")
 
+
+# PROMETHEUS Tracking Objects
 # request counter
 request_count = Counter(
     "agent_requests_total", "Total number of chat requests", ["status"]
@@ -41,9 +43,13 @@ cache_misses = Counter("agent_cache_misses_total", "Total number of cache misses
 
 error_count = Counter("agent_errors_total", "Total number of errors", ["error_type"])
 
-# loading redis vars from from environment variables
+# PROMETHEUS Tracking Objects
+
+
+# REDIS - redis host & port
 redis_host = os.getenv("REDIS_HOST", "redis")
 redis_port = int(os.getenv("REDIS_PORT", "6379"))
+
 
 # Agent initialized with Redis config
 agent = AnthropicAgent(
@@ -51,17 +57,19 @@ agent = AnthropicAgent(
 )
 
 
-# Prometheus metrics endpoint
+# PROMETHEUS metrics endpoint
 @app.get("/metrics")
 async def metrics():
     """Expose metrics for Prometheus to scrape"""
     return Response(content=generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 
+# Post request
 @app.post("/chat")
 async def chat(req: ChatRequest):
     """Chat endpoint wrapped with Prometheus metrics"""
 
+    # time for tracing
     start_time = time.time()
 
     try:
@@ -87,7 +95,7 @@ async def chat(req: ChatRequest):
         return {"response": f"Error: {str(e)}"}
 
     finally:
-        # Always track response time
+        # Recording time taken for request
         duration = time.time() - start_time
         response_time.observe(duration)
 
