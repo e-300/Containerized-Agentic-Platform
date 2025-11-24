@@ -70,11 +70,12 @@
     
 
 
+<img width="2903" height="1561" alt="image" src="https://github.com/user-attachments/assets/bf19c85d-454d-4555-952b-6c1ee0039ab9" />
 
 
 
 
-*****Grafana Dashbooard Screenshot boiiii add dat*****
+*****Grafana Dashbooard Screenshot *****
 
 
 
@@ -82,39 +83,6 @@
 
 
 
-
-
-# Project Structure #
-
-  ai-agent-mvp/
-  ├── agent/                      # Core application code
-  │   ├── __init__.py            # Package initialization
-  │   ├── base.py                # Abstract AI_Platform interface
-  │   ├── claude.py              # AnthropicAgent implementation
-  │   └── api.py                 # FastAPI endpoints & metrics
-  ├── tests/                      # Test suite
-  │   ├── __init__.py
-  │   └── test_agent.py          # Comprehensive unit tests
-  ├── docker/                     # Docker configuration
-  │   ├── Dockerfile             # Multi-stage Python image
-  │   └── .dockerignore          # Build context exclusions
-  ├── monitoring/                 # Observability configuration
-  │   ├── prometheus.yml         # Scrape configuration
-  │   ├── grafana-datasource.yml # Datasource provisioning
-  │   ├── grafana-dashboard-config.yml
-  │   └── dashboards/
-  │       ├── ai-agent-metrics.json
-  │       └── config.yml
-  ├── .github/
-  │   └── workflows/
-  │       └── ci.yml             # GitHub Actions pipeline
-  ├── docker-compose.yml          # Multi-container orchestration
-  ├── Makefile                    # Convenience commands
-  ├── requirements.txt            # Python dependencies
-  ├── .flake8                     # Linting configuration
-  ├── .gitignore                  # Git exclusions
-  ├── LICENSE                     # MIT License
-  └── README.md                   # This file
 
 
 # Tech Stack #
