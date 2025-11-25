@@ -276,6 +276,7 @@ Building this project taught me:
 - Pytest for comprehensive testing
 - Type hints for code clarity
 
+
 ---
 
 ## License
@@ -293,6 +294,11 @@ MIT
 ✨ Redis caching with fallback  
 ✨ Prometheus + Grafana monitoring  
 ✨ CI/CD pipeline with GitHub Actions  
-✨ Comprehensive test suite (95% coverage)  
+✨ Comprehensive unit test suite 
 ✨ Docker Compose orchestration  
 📝 Complete documentation
+
+
+
+
+
