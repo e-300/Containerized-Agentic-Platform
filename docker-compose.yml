@@ -2,9 +2,10 @@
 # NOTE: if service is renamed, update monitoring & promethus.yml targets
 services:
   agent:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
+    image: eb300/ai-agent:latest
+    # build:
+    #   context: .
+    #   dockerfile: docker/Dockerfile
     container_name: ai-agent
     ports:
       - "127.0.0.1:8000:8000"
